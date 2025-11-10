@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -53,11 +52,11 @@ const button = document.getElementById('magicButton');
 
 // Images to use
 const images = [
-  '1.jpg',
-  '2.jpg',
-  '3.jpg',
-  '4.jpg',
-  '5.jpg'
+  'storage/emulated/0/DCIM/Screenshots/1.jpg',
+  'storage/emulated/0/DCIM/Screenshots/2.jpg',
+  'storage/emulated/0/DCIM/Screenshots/3.jpg',
+  'storage/emulated/0/DCIM/Screenshots/4.jpg',
+  'storage/emulated/0/DCIM/Screenshots/5.jpg'
 ];
 
 // Predefined angles for 5 images in degrees
