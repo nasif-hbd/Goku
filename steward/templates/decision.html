@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Decision {{ decision.id }}{% endblock %}
+{% block content %}
+
+<p><a href="/">&larr; Decision log</a></p>
+
+<h2>{{ decision.agent }} &middot; {{ decision.created_at.strftime('%b %d %Y, %H:%M UTC') }}</h2>
+
+<div class="panel">
+  <div style="font-size:17px;font-weight:600">{{ decision.decision }}</div>
+  <p class="rationale" style="font-size:14px">{{ decision.rationale }}</p>
+  <p style="margin:14px 0 0">
+    <span class="tag {{ 'send' if decision.action == 'send_message' else decision.action }}">{{ decision.action }}</span>
+    <span class="tag">{{ decision.entity_type }} {{ decision.entity_id }}</span>
+    <span class="tag">confidence {{ decision.confidence }}</span>
+    {% if decision.model %}<span class="tag">{{ decision.model }}</span>{% endif %}
+    {% if decision.latency_ms %}<span class="tag">{{ decision.latency_ms }}ms</span>{% endif %}
+    <span class="tag">{{ 'autonomous' if decision.autonomous else 'assisted' }}</span>
+  </p>
+</div>
+
+<h2>What the agent observed</h2>
+<pre>{{ decision.observed | tojson(indent=2) }}</pre>
+
+<h2>Resulting messages</h2>
+{% if not messages %}
+  <div class="panel muted">No message - this decision was a hold or a flag.</div>
+{% else %}
+  {% for m in messages %}
+  <div class="panel" style="margin-bottom:12px">
+    <div class="muted" style="font-size:12px">
+      {{ m.channel }} &rarr; {{ m.to_name }} &lt;{{ m.to_address }}&gt;
+      &middot; <span class="tag">{{ m.status }}</span>
+    </div>
+    <div style="font-weight:600;margin:8px 0 6px">{{ m.subject }}</div>
+    <div style="white-space:pre-wrap;font-size:14px">{{ m.body }}</div>
+  </div>
+  {% endfor %}
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Steward{% endblock %}</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1e222b;
+    --line: #2a2f3a;
+    --text: #e6e9ef;
+    --muted: #939bab;
+    --accent: #7aa2f7;
+    --good: #71d08c;
+    --warn: #e0af68;
+    --bad: #f07178;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header {
+    border-bottom: 1px solid var(--line); padding: 18px 28px;
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  }
+  header h1 { font-size: 19px; margin: 0; letter-spacing: -0.01em; }
+  header .sub { color: var(--muted); font-size: 13px; }
+  main { padding: 24px 28px 64px; max-width: 1100px; margin: 0 auto; }
+  h2 { font-size: 14px; text-transform: uppercase; letter-spacing: .07em;
+       color: var(--muted); margin: 32px 0 12px; font-weight: 600; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+  .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+  .stat .n { font-size: 24px; font-weight: 650; letter-spacing: -0.02em; }
+  .stat .l { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; color: var(--muted); font-weight: 600; font-size: 12px;
+       text-transform: uppercase; letter-spacing: .05em;
+       padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  td { padding: 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:hover td { background: var(--panel); }
+  .tag { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 999px;
+         border: 1px solid var(--line); background: var(--panel-2); color: var(--muted); }
+  .tag.send { color: var(--accent); border-color: #2c3b5c; }
+  .tag.escalate { color: var(--bad); border-color: #5c2c31; }
+  .tag.flag { color: var(--warn); border-color: #5c4a2c; }
+  .tag.none { color: var(--muted); }
+  .muted { color: var(--muted); }
+  .rationale { color: var(--muted); font-size: 13px; margin-top: 3px; max-width: 62ch; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; }
+  pre { background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px;
+        padding: 14px; overflow-x: auto; font-size: 13px; margin: 0; }
+  .btn { display: inline-block; background: var(--panel-2); border: 1px solid var(--line);
+         color: var(--text); border-radius: 7px; padding: 7px 13px; font-size: 13px; cursor: pointer; }
+  .btn:hover { border-color: var(--accent); }
+  .agentlist { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+  .agentlist .a { background: var(--panel); border: 1px solid var(--line);
+                  border-radius: 9px; padding: 12px 14px; }
+  .agentlist .a b { font-size: 13px; }
+  .agentlist .a p { margin: 4px 0 0; font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1><a href="/" style="color:inherit">Steward</a></h1>
+  <span class="sub">{{ org.name }} &middot; autonomous back office</span>
+</header>
+<main>{% block content %}{% endblock %}</main>
+</body>
+</html>

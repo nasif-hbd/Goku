@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="stats">
+  <div class="stat"><div class="n">{{ stats.decisions }}</div><div class="l">agent decisions</div></div>
+  <div class="stat"><div class="n">{{ stats.acted }}</div><div class="l">acted on</div></div>
+  <div class="stat"><div class="n">{{ stats.messages }}</div><div class="l">messages sent</div></div>
+  <div class="stat"><div class="n">{{ stats.clients }}</div><div class="l">active {{ v.client_plural }}</div></div>
+  <div class="stat"><div class="n" {% if stats.at_risk %}style="color:var(--warn)"{% endif %}>{{ stats.at_risk }}</div><div class="l">at risk</div></div>
+  <div class="stat"><div class="n">{{ currency }} {{ stats.outstanding }}</div><div class="l">outstanding</div></div>
+  <div class="stat"><div class="n">{{ currency }} {{ stats.mrr }}</div><div class="l">monthly recurring</div></div>
+</div>
+
+<h2>Running agents</h2>
+<div class="agentlist">
+  {% for agent in roster %}
+  <div class="a"><b>{{ agent.name }}</b><p>{{ agent.purpose }}</p></div>
+  {% endfor %}
+</div>
+<p style="margin-top:14px">
+  <form method="post" action="/tick" style="display:inline">
+    <button class="btn" type="submit">Run a tick now</button>
+  </form>
+  <span class="muted" style="margin-left:10px;font-size:13px">
+    In production Cloud Scheduler calls <code>/tick</code> on a schedule.
+  </span>
+</p>
+
+<h2>Decision log</h2>
+{% if not decisions %}
+  <div class="panel muted">No decisions yet. Run a tick.</div>
+{% else %}
+<table>
+  <thead>
+    <tr><th>When</th><th>Agent</th><th>Decision &amp; rationale</th><th>Action</th><th>Model</th></tr>
+  </thead>
+  <tbody>
+  {% for d in decisions %}
+    <tr>
+      <td class="muted" style="white-space:nowrap">{{ d.created_at.strftime('%b %d %H:%M') }}</td>
+      <td><span class="tag">{{ d.agent }}</span></td>
+      <td>
+        <a href="/decisions/{{ d.id }}">{{ d.decision }}</a>
+        <div class="rationale">{{ d.rationale }}</div>
+      </td>
+      <td><span class="tag {{ 'send' if d.action == 'send_message' else d.action }}">{{ d.action }}</span></td>
+      <td class="muted" style="font-size:12px;white-space:nowrap">
+        {{ d.model or '-' }}{% if d.latency_ms %}<br>{{ d.latency_ms }}ms{% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+<h2>{{ v.client_plural.title() }}</h2>
+<table>
+  <thead><tr><th>Name</th><th>{{ v.payer_label.title() }}</th><th>Fee</th><th>Status</th></tr></thead>
+  <tbody>
+  {% for c in clients %}
+    <tr>
+      <td>{{ c.name }}</td>
+      <td class="muted">{{ c.payer_name }}</td>
+      <td>{{ currency }} {{ '%.2f'|format(c.monthly_fee) }}</td>
+      <td>
+        <span class="tag {{ 'flag' if c.status == 'at_risk' else '' }}">{{ c.status }}</span>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

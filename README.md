@@ -1,90 +1,125 @@
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Button Explosion Birthday</title>
-<style>
-  body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #f9c5d1, #ffd1dc);
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-    position: relative;
-  }
-  .button {
-    padding: 20px 40px;
-    font-size: 18px;
-    background: linear-gradient(90deg,#ff758c,#ff7eb3);
-    border: none;
-    border-radius: 12px;
-    color: white;
-    cursor: pointer;
-    position: relative;
-    z-index: 10;
-    transition: transform 0.2s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  }
-  .button:active {
-    transform: scale(0.95);
-  }
-  .explosion {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 16px;
-    border: 3px solid white;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    pointer-events: none;
-    transition: transform 2s ease-out;
-  }
-</style>
-</head>
-<body>
-<button class="button" id="magicButton">Touch Me Baby</button>
-<script>
-const button = document.getElementById('magicButton');
+# Steward
 
-// Images to use
-const images = [
-  'storage/emulated/0/DCIM/Screenshots/1.jpg',
-  'storage/emulated/0/DCIM/Screenshots/2.jpg',
-  'storage/emulated/0/DCIM/Screenshots/3.jpg',
-  'storage/emulated/0/DCIM/Screenshots/4.jpg',
-  'storage/emulated/0/DCIM/Screenshots/5.jpg'
-];
+**Autonomous back-office operations for small organizations.**
 
-// Predefined angles for 5 images in degrees
-const angles = [0, 72, 144, 216, 288];
-const distance = 200; // how far images move
+Steward is not a place to write tasks down. It is a set of agents that *do* the
+recurring administrative work a small organization never gets to: chasing staff
+for missing documentation, escalating unpaid invoices, writing the progress
+updates clients expect, spotting churn before it happens, and reporting the lot
+to the owner once a day.
 
-button.addEventListener('click', function() {
-    const rect = button.getBoundingClientRect();
-    images.forEach(function(imgSrc, index) {
-        const img = document.createElement('div');
-        img.className = 'explosion';
-        img.style.backgroundImage = 'url(' + imgSrc + ')';
-        img.style.left = rect.left + rect.width/2 - 40 + 'px';
-        img.style.top = rect.top + rect.height/2 - 40 + 'px';
-        document.body.appendChild(img);
+Every action is preceded by a logged decision explaining what the agent saw and
+why it chose to act — or chose not to.
 
-        const angleDeg = angles[index]; // use predefined angle
-        const angleRad = angleDeg * Math.PI / 180;
-        const x = distance * Math.cos(angleRad);
-        const y = distance * Math.sin(angleRad);
+---
 
-        requestAnimationFrame(() => {
-            img.style.transform = `translate(${x}px, ${y}px) rotate(${angleDeg}deg)`;
-        });
-    });
+## Why this shape
 
-    button.textContent = 'Happy Birthday ❤️‍🩹';
-});
-</script>
-</body>
-</html>
+Small organizations do not fail at admin because they lack somewhere to store
+tasks; they have WhatsApp, notebooks, and three abandoned Trello boards. They
+fail because the work is uncomfortable, repetitive, and always loses to whatever
+is urgent. Nobody enjoys asking a parent for money.
+
+So Steward does not add another surface for humans to maintain. The humans keep
+teaching; the agents run the loop around them.
+
+## The agents
+
+| Agent | What it does |
+|---|---|
+| `chase` | Finds sessions with no filed note, nudges the staff member, escalates to the owner after two ignored nudges, and writes off anything older than the chase window rather than nagging forever. |
+| `collections` | Walks overdue invoices up a 3/10/21-day escalation ladder, adapting tone to payment history and offering a payment plan to chronically late payers. Holds during the grace period instead of chasing on day one. |
+| `reports` | Compiles staff notes into a progress update for the payer. Refuses to send when there is no material — a fabricated report is worse than none. |
+| `risk` | Combines attendance decay and unpaid invoices into a churn signal, flags the client, and tells the owner the single most effective next step. |
+| `digest` | Runs last. Summarises what was handled automatically and the short list that genuinely needs a human. |
+
+Agents converge: a given issue produces a nudge, a second nudge, an escalation,
+and then silence. They do not re-fire on every tick.
+
+## Architecture
+
+```
+Cloud Scheduler ──POST /tick──▶ Cloud Run (FastAPI)
+                                    │
+                                    ├── agents/  observe → decide → act
+                                    ├── Gemini API   (judgement + drafting)
+                                    └── Firestore    (orgs, decisions, messages)
+```
+
+- **Gemini API** backs every judgement call and every drafted message.
+- **Firestore** stores documents in production; SQLite backs local development
+  through the same interface, so the two behave identically.
+- **Cloud Run** hosts the app; **Cloud Scheduler** drives the tick; **Secret
+  Manager** holds the API key.
+
+If `GEMINI_API_KEY` is absent the agents fall back to deterministic templates so
+the loops stay runnable offline. Fallback output is always tagged as such in the
+decision log — it can never be mistaken for a model decision.
+
+## Run it locally
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+
+export GEMINI_API_KEY=...          # optional; omit to run on fallbacks
+.venv/bin/python scripts/seed.py   # realistic coaching center
+.venv/bin/python scripts/tick.py   # run every agent once
+.venv/bin/python -m uvicorn steward.main:app --port 8080
+```
+
+Open <http://localhost:8080> for the dashboard and decision log.
+
+Run `scripts/tick.py` repeatedly to watch escalation work: nudge, second nudge,
+escalation to the owner, then silence.
+
+## Deploy
+
+```bash
+export PROJECT_ID=your-gcp-project
+export GEMINI_API_KEY=your-key
+./deploy/deploy.sh
+```
+
+Enables the required APIs, creates the Firestore database, stores the key in
+Secret Manager, deploys to Cloud Run, and schedules the tick every four hours.
+
+## Configuration
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `GEMINI_API_KEY` | — | Gemini API key. Absent ⇒ fallback mode. |
+| `GEMINI_MODEL` | `gemini-2.5-flash` | Model for agent decisions. |
+| `GOOGLE_CLOUD_PROJECT` | — | Set ⇒ Firestore backend. |
+| `STEWARD_VERTICAL` | `coaching_center` | `coaching_center`, `clinic`, or `agency`. |
+| `STEWARD_AUTOSEND` | `true` | `false` queues messages for owner approval. |
+| `STEWARD_CURRENCY` | `USD` | Currency label. |
+| `SMTP_HOST` etc. | — | Real email delivery. Unset ⇒ messages recorded only. |
+
+## Changing vertical
+
+The agent logic is domain-independent; the vertical supplies vocabulary and a
+few policy numbers. `clinic` and `agency` profiles ship in
+`steward/config.py` — adding another is one `VerticalProfile`, no agent changes.
+
+## Layout
+
+```
+steward/
+  agents/       chase, collections, reports, risk, digest
+  config.py     vertical profiles and settings
+  gemini.py     Gemini client with tagged offline fallback
+  models.py     domain records incl. the Decision audit record
+  store.py      SQLite + Firestore behind one interface
+  main.py       FastAPI app, dashboard, /tick
+scripts/        seed.py, tick.py
+deploy/         deploy.sh
+```
+
+## Status
+
+Working: all five agent loops, decision logging, dashboard, SQLite and Firestore
+backends, Gemini integration, Cloud Run packaging.
+
+Not yet done: real payment-provider integration (invoices are marked paid
+manually), SMS/WhatsApp delivery (email and dashboard only), and multi-org
+authentication — the dashboard currently serves the first org in the store.
