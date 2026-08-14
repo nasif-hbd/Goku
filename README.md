@@ -56,6 +56,28 @@ If `GEMINI_API_KEY` is absent the agents fall back to deterministic templates so
 the loops stay runnable offline. Fallback output is always tagged as such in the
 decision log — it can never be mistaken for a model decision.
 
+## Live demo
+
+A static page that replays a real three-tick run — step through the scheduler
+and watch the agents decide, escalate, and then stop.
+
+- **Hosted:** <https://claude.ai/code/artifact/3eb64766-1331-461f-85ca-44f23aa381f9>
+- **GitHub Pages:** enable Settings → Pages → source `/docs`, then browse to
+  `https://<user>.github.io/<repo>/`
+
+It is generated, not hand-written — `demo/template.html` plus genuine exported
+output, so it cannot drift from what the code actually does:
+
+```bash
+python scripts/seed.py
+python scripts/export_run.py demo/run.json
+python scripts/build_demo.py          # -> demo/index.html and docs/index.html
+```
+
+The demo is a replay, not the running service, and the page says so. It also
+ran without a Gemini key, so message wording came from templates while the
+decisions and escalation logic are real.
+
 ## Run it locally
 
 ```bash

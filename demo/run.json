@@ -1,0 +1,699 @@
+{
+ "org": {
+  "name": "Northside Coaching",
+  "owner_name": "Rina"
+ },
+ "clients": [
+  {
+   "name": "Ayaan",
+   "payer_name": "Nusrat",
+   "monthly_fee": 60.0,
+   "status": "active"
+  },
+  {
+   "name": "Mahi",
+   "payer_name": "Farhana",
+   "monthly_fee": 60.0,
+   "status": "active"
+  },
+  {
+   "name": "Nabil",
+   "payer_name": "Jahangir",
+   "monthly_fee": 90.0,
+   "status": "active"
+  },
+  {
+   "name": "Rafi",
+   "payer_name": "Shirin",
+   "monthly_fee": 60.0,
+   "status": "active"
+  },
+  {
+   "name": "Tasnim",
+   "payer_name": "Rubel",
+   "monthly_fee": 60.0,
+   "status": "active"
+  },
+  {
+   "name": "Zara",
+   "payer_name": "Kamrul",
+   "monthly_fee": 75.0,
+   "status": "at_risk"
+  }
+ ],
+ "ticks": [
+  [
+   {
+    "id": "dec_89f159bc331b",
+    "agent": "chase",
+    "decision": "nudge_staff (attempt 1)",
+    "rationale": "progress note overdue by 240h",
+    "action": "send_message",
+    "confidence": 0.9,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "session_id": "ses_eb1670a86f04",
+     "hours_since_session": 240,
+     "prior_nudges": 0,
+     "staff": "Sadia",
+     "client": "Zara"
+    },
+    "messages": [
+     {
+      "to_name": "Sadia",
+      "to_address": "sadia@northside.example",
+      "subject": "Progress Note needed: Zara",
+      "body": "Hi Sadia, the progress note for your class with Zara is still outstanding (240h). Could you add it today?",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_b3d83efcae31",
+    "agent": "chase",
+    "decision": "write_off_stale",
+    "rationale": "Zara's class with Tanvir was 38 days ago and is still undocumented. Past the 14-day window the detail is gone, so chasing it now costs goodwill and recovers nothing.",
+    "action": "none",
+    "confidence": 0.9,
+    "model": "-",
+    "latency_ms": 0,
+    "observed": {
+     "session_id": "ses_e65584f157b2",
+     "days_since_session": 38,
+     "staff": "Tanvir",
+     "client": "Zara"
+    },
+    "messages": []
+   },
+   {
+    "id": "dec_60df39ee6241",
+    "agent": "chase",
+    "decision": "nudge_staff (attempt 1)",
+    "rationale": "progress note overdue by 72h",
+    "action": "send_message",
+    "confidence": 0.9,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "session_id": "ses_a49d42954d6d",
+     "hours_since_session": 72,
+     "prior_nudges": 0,
+     "staff": "Imran",
+     "client": "Nabil"
+    },
+    "messages": [
+     {
+      "to_name": "Imran",
+      "to_address": "imran@northside.example",
+      "subject": "Progress Note needed: Nabil",
+      "body": "Hi Imran, the progress note for your class with Nabil is still outstanding (72h). Could you add it today?",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_82005e36acd5",
+    "agent": "chase",
+    "decision": "write_off_stale",
+    "rationale": "Nabil's class with Tanvir was 17 days ago and is still undocumented. Past the 14-day window the detail is gone, so chasing it now costs goodwill and recovers nothing.",
+    "action": "none",
+    "confidence": 0.9,
+    "model": "-",
+    "latency_ms": 0,
+    "observed": {
+     "session_id": "ses_319eccd5b2c4",
+     "days_since_session": 17,
+     "staff": "Tanvir",
+     "client": "Nabil"
+    },
+    "messages": []
+   },
+   {
+    "id": "dec_d31d2e675b52",
+    "agent": "chase",
+    "decision": "write_off_stale",
+    "rationale": "Nabil's class with Imran was 24 days ago and is still undocumented. Past the 14-day window the detail is gone, so chasing it now costs goodwill and recovers nothing.",
+    "action": "none",
+    "confidence": 0.9,
+    "model": "-",
+    "latency_ms": 0,
+    "observed": {
+     "session_id": "ses_d3ff7c1acbcd",
+     "days_since_session": 24,
+     "staff": "Imran",
+     "client": "Nabil"
+    },
+    "messages": []
+   },
+   {
+    "id": "dec_d0804f1b1ad2",
+    "agent": "chase",
+    "decision": "write_off_stale",
+    "rationale": "Nabil's class with Sadia was 31 days ago and is still undocumented. Past the 14-day window the detail is gone, so chasing it now costs goodwill and recovers nothing.",
+    "action": "none",
+    "confidence": 0.9,
+    "model": "-",
+    "latency_ms": 0,
+    "observed": {
+     "session_id": "ses_f8e97bea0847",
+     "days_since_session": 31,
+     "staff": "Sadia",
+     "client": "Nabil"
+    },
+    "messages": []
+   },
+   {
+    "id": "dec_7f66eb8d6a54",
+    "agent": "chase",
+    "decision": "write_off_stale",
+    "rationale": "Nabil's class with Tanvir was 38 days ago and is still undocumented. Past the 14-day window the detail is gone, so chasing it now costs goodwill and recovers nothing.",
+    "action": "none",
+    "confidence": 0.9,
+    "model": "-",
+    "latency_ms": 0,
+    "observed": {
+     "session_id": "ses_059ee1e7e620",
+     "days_since_session": 38,
+     "staff": "Tanvir",
+     "client": "Nabil"
+    },
+    "messages": []
+   },
+   {
+    "id": "dec_078bbcbe9e14",
+    "agent": "collections",
+    "decision": "hold_grace_period",
+    "rationale": "2d overdue but the first reminder is not due until day 3. Chasing sooner costs goodwill for no gain.",
+    "action": "none",
+    "confidence": 0.85,
+    "model": "-",
+    "latency_ms": 0,
+    "observed": {
+     "days_overdue": 2,
+     "client": "Mahi"
+    },
+    "messages": []
+   },
+   {
+    "id": "dec_40bee0908ef2",
+    "agent": "collections",
+    "decision": "send_reminder_tier_1",
+    "rationale": "reminder 1 of 3 at 6d overdue",
+    "action": "send_message",
+    "confidence": 0.9,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "days_overdue": 6,
+     "amount": 60.0,
+     "tier": 1,
+     "history": {
+      "paid_invoices": 0,
+      "late_cycles": 0,
+      "reliable": false
+     }
+    },
+    "messages": [
+     {
+      "to_name": "Shirin",
+      "to_address": "shirin@example.com",
+      "subject": "Invoice 2026-08 - 60.00 USD",
+      "body": "Hello Shirin, the 2026-08 invoice for Rafi (60.00 USD) is 6 days past due. Could you settle it this week?",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_00cee484c060",
+    "agent": "collections",
+    "decision": "send_reminder_tier_2",
+    "rationale": "reminder 2 of 3 at 13d overdue",
+    "action": "send_message",
+    "confidence": 0.9,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "days_overdue": 13,
+     "amount": 90.0,
+     "tier": 2,
+     "history": {
+      "paid_invoices": 0,
+      "late_cycles": 0,
+      "reliable": false
+     }
+    },
+    "messages": [
+     {
+      "to_name": "Jahangir",
+      "to_address": "jahangir@example.com",
+      "subject": "Invoice 2026-08 - 90.00 USD",
+      "body": "Hello Jahangir, the 2026-08 invoice for Nabil (90.00 USD) is 13 days past due. Could you settle it this week?",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_7bd2b552569e",
+    "agent": "collections",
+    "decision": "send_reminder_tier_3",
+    "rationale": "reminder 3 of 3 at 26d overdue",
+    "action": "send_message",
+    "confidence": 0.9,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "days_overdue": 26,
+     "amount": 75.0,
+     "tier": 3,
+     "history": {
+      "paid_invoices": 0,
+      "late_cycles": 0,
+      "reliable": false
+     }
+    },
+    "messages": [
+     {
+      "to_name": "Kamrul",
+      "to_address": "kamrul@example.com",
+      "subject": "Invoice 2026-07 - 75.00 USD",
+      "body": "Hello Kamrul, the 2026-07 invoice for Zara (75.00 USD) is 26 days past due. Could you settle it this week?",
+      "status": "sent"
+     },
+     {
+      "to_name": "Rina",
+      "to_address": "owner@northside.example",
+      "subject": "Final reminder sent: Zara (26d overdue)",
+      "body": "Kamrul has now had all 3 reminders for invoice 2026-07 (75.00 USD). Automated chasing stops here.",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_ea0d9c61d356",
+    "agent": "collections",
+    "decision": "send_reminder_tier_3",
+    "rationale": "reminder 3 of 3 at 56d overdue",
+    "action": "send_message",
+    "confidence": 0.9,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "days_overdue": 56,
+     "amount": 75.0,
+     "tier": 3,
+     "history": {
+      "paid_invoices": 0,
+      "late_cycles": 0,
+      "reliable": false
+     }
+    },
+    "messages": [
+     {
+      "to_name": "Kamrul",
+      "to_address": "kamrul@example.com",
+      "subject": "Invoice 2026-06 - 75.00 USD",
+      "body": "Hello Kamrul, the 2026-06 invoice for Zara (75.00 USD) is 56 days past due. Could you settle it this week?",
+      "status": "sent"
+     },
+     {
+      "to_name": "Rina",
+      "to_address": "owner@northside.example",
+      "subject": "Final reminder sent: Zara (56d overdue)",
+      "body": "Kamrul has now had all 3 reminders for invoice 2026-06 (75.00 USD). Automated chasing stops here.",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_d292a8fbc716",
+    "agent": "reports",
+    "decision": "send_progress_report",
+    "rationale": "compiled from 1 progress notes",
+    "action": "send_message",
+    "confidence": 0.88,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "notes_in_window": 1,
+     "client": "Ayaan",
+     "sentiment": "mixed"
+    },
+    "messages": [
+     {
+      "to_name": "Nusrat",
+      "to_address": "nusrat@example.com",
+      "subject": "Ayaan - weekly update",
+      "body": "Hello Nusrat,\n\nHere is what Ayaan covered this week:\n\n- [Aug 11] Imran: Fractions revision. Much more confident than last month.\n\n- Northside Coaching",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_b0fa64faf597",
+    "agent": "reports",
+    "decision": "send_progress_report",
+    "rationale": "compiled from 1 progress notes",
+    "action": "send_message",
+    "confidence": 0.88,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "notes_in_window": 1,
+     "client": "Mahi",
+     "sentiment": "mixed"
+    },
+    "messages": [
+     {
+      "to_name": "Farhana",
+      "to_address": "farhana@example.com",
+      "subject": "Mahi - weekly update",
+      "body": "Hello Farhana,\n\nHere is what Mahi covered this week:\n\n- [Aug 11] Imran: Worked through quadratic factorisation. Got the method, still slow on signs.\n\n- Northside Coaching",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_57611b71fa24",
+    "agent": "reports",
+    "decision": "skip_no_material",
+    "rationale": "No progress notes filed for Zara this period. Sending a report with nothing in it would damage trust; the gap is the chase agent's problem, not a report to write around.",
+    "action": "none",
+    "confidence": 0.95,
+    "model": "-",
+    "latency_ms": 0,
+    "observed": {
+     "notes_in_window": 0,
+     "client": "Zara"
+    },
+    "messages": []
+   },
+   {
+    "id": "dec_f2b1b48f400f",
+    "agent": "reports",
+    "decision": "send_progress_report",
+    "rationale": "compiled from 1 progress notes",
+    "action": "send_message",
+    "confidence": 0.88,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "notes_in_window": 1,
+     "client": "Rafi",
+     "sentiment": "mixed"
+    },
+    "messages": [
+     {
+      "to_name": "Shirin",
+      "to_address": "shirin@example.com",
+      "subject": "Rafi - weekly update",
+      "body": "Hello Shirin,\n\nHere is what Rafi covered this week:\n\n- [Aug 11] Imran: Essay structure. Intro is strong now, conclusions still rushed.\n\n- Northside Coaching",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_22af033f0492",
+    "agent": "reports",
+    "decision": "skip_no_material",
+    "rationale": "No progress notes filed for Nabil this period. Sending a report with nothing in it would damage trust; the gap is the chase agent's problem, not a report to write around.",
+    "action": "none",
+    "confidence": 0.95,
+    "model": "-",
+    "latency_ms": 0,
+    "observed": {
+     "notes_in_window": 0,
+     "client": "Nabil"
+    },
+    "messages": []
+   },
+   {
+    "id": "dec_807469742782",
+    "agent": "reports",
+    "decision": "skip_no_material",
+    "rationale": "No progress notes filed for Tasnim this period. Sending a report with nothing in it would damage trust; the gap is the chase agent's problem, not a report to write around.",
+    "action": "none",
+    "confidence": 0.95,
+    "model": "-",
+    "latency_ms": 0,
+    "observed": {
+     "notes_in_window": 0,
+     "client": "Tasnim"
+    },
+    "messages": []
+   },
+   {
+    "id": "dec_0232b8058931",
+    "agent": "risk",
+    "decision": "flag_at_risk (act_now)",
+    "rationale": "attendance 0.33, 2 unpaid",
+    "action": "flag",
+    "confidence": 0.82,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "client": "Zara",
+     "sessions_considered": 6,
+     "attended": 2,
+     "attendance_ratio": 0.33,
+     "unpaid_invoices": 2,
+     "amount_outstanding": 150.0
+    },
+    "messages": [
+     {
+      "to_name": "Rina",
+      "to_address": "owner@northside.example",
+      "subject": "At risk: Zara (75/mo)",
+      "body": "Signals: attended 2/6 recent classes; 2 overdue invoice(s) (150.0).\n\nRecommended: Call Kamrul personally this week to ask what has changed before raising the unpaid balance.",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_1159738d848f",
+    "agent": "digest",
+    "decision": "send_owner_digest",
+    "rationale": "19 decisions across 4 agents",
+    "action": "send_message",
+    "confidence": 0.9,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "decisions_since_last": 19,
+     "by_agent": {
+      "chase": 7,
+      "collections": 5,
+      "reports": 6,
+      "risk": 1
+     },
+     "messages_sent": 9,
+     "escalations": 0,
+     "flags": 1
+    },
+    "messages": [
+     {
+      "to_name": "Rina",
+      "to_address": "owner@northside.example",
+      "subject": "Daily digest - 9 handled, 1 need you",
+      "body": "Handled automatically: 9 messages.\n\nNeeds you:\n- [chase] nudge_staff (attempt 1): progress note overdue by 240h\n- [chase] write_off_stale: Zara's class with Tanvir was 38 days ago and is still undocumented. Past the 14-day window the detail is gone, so chasing it now costs goodwill and recovers nothing.\n- [chase] nudge_staff (attempt 1): progress note overdue by 72h\n- [chase] write_off_stale: Nabil's class with Tanvir was 17 days ago and is still undocumented. Past the 14-day window the detail is gone, so chasing it now costs goodwill and recovers nothing.\n- [chase] write_off_stale: Nabil's class with Imran was 24 days ago and is still undocumented. Past the 14-day window the detail is gone, so chasing it now costs goodwill and recovers nothing.\n- [chase] write_off_stale: Nabil's class with Sadia was 31 days ago and is still undocumented. Past the 14-day window the detail is gone, so chasing it now costs goodwill and recovers nothing.\n- [chase] write_off_stale: Nabil's class with Tanvir was 38 days ago and is still undocumented. Past the 14-day window the detail is gone, so chasing it now costs goodwill and recovers nothing.\n- [collections] hold_grace_period: 2d overdue but the first reminder is not due until day 3. Chasing sooner costs goodwill for no gain.\n- [collections] send_reminder_tier_1: reminder 1 of 3 at 6d overdue\n- [collections] send_reminder_tier_2: reminder 2 of 3 at 13d overdue\n- [collections] send_reminder_tier_3: reminder 3 of 3 at 26d overdue\n- [collections] send_reminder_tier_3: reminder 3 of 3 at 56d overdue\n- [reports] send_progress_report: compiled from 1 progress notes\n- [reports] send_progress_report: compiled from 1 progress notes\n- [reports] skip_no_material: No progress notes filed for Zara this period. Sending a report with nothing in it would damage trust; the gap is the chase agent's problem, not a report to write around.\n- [reports] send_progress_report: compiled from 1 progress notes\n- [reports] skip_no_material: No progress notes filed for Nabil this period. Sending a report with nothing in it would damage trust; the gap is the chase agent's problem, not a report to write around.\n- [reports] skip_no_material: No progress notes filed for Tasnim this period. Sending a report with nothing in it would damage trust; the gap is the chase agent's problem, not a report to write around.\n- [risk] flag_at_risk (act_now): attendance 0.33, 2 unpaid",
+      "status": "sent"
+     }
+    ]
+   }
+  ],
+  [
+   {
+    "id": "dec_5bc397f34366",
+    "agent": "chase",
+    "decision": "nudge_staff (attempt 2)",
+    "rationale": "progress note overdue by 264h",
+    "action": "send_message",
+    "confidence": 0.9,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "session_id": "ses_eb1670a86f04",
+     "hours_since_session": 264,
+     "prior_nudges": 1,
+     "staff": "Sadia",
+     "client": "Zara"
+    },
+    "messages": [
+     {
+      "to_name": "Sadia",
+      "to_address": "sadia@northside.example",
+      "subject": "Progress Note needed: Zara",
+      "body": "Hi Sadia, the progress note for your class with Zara is still outstanding (264h). Could you add it today?",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_9e0d7326f828",
+    "agent": "chase",
+    "decision": "nudge_staff (attempt 2)",
+    "rationale": "progress note overdue by 96h",
+    "action": "send_message",
+    "confidence": 0.9,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "session_id": "ses_a49d42954d6d",
+     "hours_since_session": 96,
+     "prior_nudges": 1,
+     "staff": "Imran",
+     "client": "Nabil"
+    },
+    "messages": [
+     {
+      "to_name": "Imran",
+      "to_address": "imran@northside.example",
+      "subject": "Progress Note needed: Nabil",
+      "body": "Hi Imran, the progress note for your class with Nabil is still outstanding (96h). Could you add it today?",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_103e1a0542f2",
+    "agent": "collections",
+    "decision": "send_reminder_tier_1",
+    "rationale": "reminder 1 of 3 at 3d overdue",
+    "action": "send_message",
+    "confidence": 0.9,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "days_overdue": 3,
+     "amount": 60.0,
+     "tier": 1,
+     "history": {
+      "paid_invoices": 0,
+      "late_cycles": 0,
+      "reliable": false
+     }
+    },
+    "messages": [
+     {
+      "to_name": "Farhana",
+      "to_address": "farhana@example.com",
+      "subject": "Invoice 2026-08 - 60.00 USD",
+      "body": "Hello Farhana, the 2026-08 invoice for Mahi (60.00 USD) is 3 days past due. Could you settle it this week?",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_14ff17952c6b",
+    "agent": "digest",
+    "decision": "send_owner_digest",
+    "rationale": "3 decisions across 2 agents",
+    "action": "send_message",
+    "confidence": 0.9,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "decisions_since_last": 3,
+     "by_agent": {
+      "chase": 2,
+      "collections": 1
+     },
+     "messages_sent": 3,
+     "escalations": 0,
+     "flags": 0
+    },
+    "messages": [
+     {
+      "to_name": "Rina",
+      "to_address": "owner@northside.example",
+      "subject": "Daily digest - 3 handled, 0 need you",
+      "body": "Handled automatically: 3 messages.\n\nNeeds you:\nNothing today.",
+      "status": "sent"
+     }
+    ]
+   }
+  ],
+  [
+   {
+    "id": "dec_cef0b15e01d9",
+    "agent": "chase",
+    "decision": "escalate_to_owner",
+    "rationale": "Sadia did not respond to 2 nudges; further automated reminders are unlikely to work.",
+    "action": "escalate",
+    "confidence": 0.95,
+    "model": "-",
+    "latency_ms": 0,
+    "observed": {
+     "session_id": "ses_eb1670a86f04",
+     "hours_since_session": 288,
+     "prior_nudges": 2,
+     "staff": "Sadia",
+     "client": "Zara"
+    },
+    "messages": [
+     {
+      "to_name": "Rina",
+      "to_address": "owner@northside.example",
+      "subject": "Needs you: Sadia - missing progress note",
+      "body": "Sadia has not filed the progress note for Zara's class after 2 reminders (288h ago). Stopping automated reminders on this one - it needs a word from you.",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_8dfe7fe2657a",
+    "agent": "chase",
+    "decision": "escalate_to_owner",
+    "rationale": "Imran did not respond to 2 nudges; further automated reminders are unlikely to work.",
+    "action": "escalate",
+    "confidence": 0.95,
+    "model": "-",
+    "latency_ms": 0,
+    "observed": {
+     "session_id": "ses_a49d42954d6d",
+     "hours_since_session": 120,
+     "prior_nudges": 2,
+     "staff": "Imran",
+     "client": "Nabil"
+    },
+    "messages": [
+     {
+      "to_name": "Rina",
+      "to_address": "owner@northside.example",
+      "subject": "Needs you: Imran - missing progress note",
+      "body": "Imran has not filed the progress note for Nabil's class after 2 reminders (120h ago). Stopping automated reminders on this one - it needs a word from you.",
+      "status": "sent"
+     }
+    ]
+   },
+   {
+    "id": "dec_4bfbdd53c8fb",
+    "agent": "digest",
+    "decision": "send_owner_digest",
+    "rationale": "2 decisions across 1 agents",
+    "action": "send_message",
+    "confidence": 0.9,
+    "model": "fallback:none",
+    "latency_ms": 0,
+    "observed": {
+     "decisions_since_last": 2,
+     "by_agent": {
+      "chase": 2
+     },
+     "messages_sent": 0,
+     "escalations": 2,
+     "flags": 0
+    },
+    "messages": [
+     {
+      "to_name": "Rina",
+      "to_address": "owner@northside.example",
+      "subject": "Daily digest - 0 handled, 2 need you",
+      "body": "Handled automatically: 0 messages.\n\nNeeds you:\n- [chase] escalate_to_owner: Sadia did not respond to 2 nudges; further automated reminders are unlikely to work.\n- [chase] escalate_to_owner: Imran did not respond to 2 nudges; further automated reminders are unlikely to work.",
+      "status": "sent"
+     }
+    ]
+   }
+  ]
+ ]
+}

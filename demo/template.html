@@ -1,0 +1,648 @@
+<title>Steward Decision Log</title>
+<style>
+  :root {
+    --ground:  #f5f6f8;
+    --surface: #ffffff;
+    --raised:  #eef0f4;
+    --line:    #e0e3ea;
+    --line-hi: #c9cfda;
+    --text:    #151a22;
+    --muted:   #626b7b;
+    --faint:   #8d95a3;
+    --accent:  #3b5bdb;
+    --accent-soft: #e7ecfd;
+    --good:    #1f7a4d;
+    --good-soft:#e2f2ea;
+    --warn:    #9a6206;
+    --warn-soft:#fbeed8;
+    --crit:    #b3261e;
+    --crit-soft:#fbe4e2;
+
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+    --r: 7px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:  #11151c;
+      --surface: #171c25;
+      --raised:  #1e242f;
+      --line:    #262d39;
+      --line-hi: #39424f;
+      --text:    #e6eaf1;
+      --muted:   #8b94a5;
+      --faint:   #6d7686;
+      --accent:  #7b93f5;
+      --accent-soft: #1c2440;
+      --good:    #4fb07e;
+      --good-soft:#12291f;
+      --warn:    #e0a34e;
+      --warn-soft:#2c2113;
+      --crit:    #f08279;
+      --crit-soft:#2e1715;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:  #11151c;
+    --surface: #171c25;
+    --raised:  #1e242f;
+    --line:    #262d39;
+    --line-hi: #39424f;
+    --text:    #e6eaf1;
+    --muted:   #8b94a5;
+    --faint:   #6d7686;
+    --accent:  #7b93f5;
+    --accent-soft: #1c2440;
+    --good:    #4fb07e;
+    --good-soft:#12291f;
+    --warn:    #e0a34e;
+    --warn-soft:#2c2113;
+    --crit:    #f08279;
+    --crit-soft:#2e1715;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* ---- header ---- */
+
+  .masthead {
+    border-bottom: 1px solid var(--line);
+    padding: 34px 0 22px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .brand h1 {
+    margin: 0;
+    font-size: 27px;
+    font-weight: 660;
+    letter-spacing: -0.024em;
+  }
+  .brand p { margin: 5px 0 0; color: var(--muted); font-size: 14.5px; max-width: 58ch; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    color: var(--faint);
+    margin: 0 0 7px;
+  }
+
+  .themetoggle {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .06em;
+    background: var(--surface); color: var(--muted);
+    border: 1px solid var(--line); border-radius: var(--r);
+    padding: 7px 11px; cursor: pointer; text-transform: uppercase;
+  }
+  .themetoggle:hover { border-color: var(--line-hi); color: var(--text); }
+
+  /* ---- provenance ---- */
+
+  .provenance {
+    margin: 22px 0 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--warn);
+    border-radius: var(--r);
+    padding: 14px 17px;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+  .provenance b { color: var(--text); font-weight: 620; }
+  .provenance code {
+    font-family: var(--mono); font-size: 12px;
+    background: var(--raised); padding: 1px 5px; border-radius: 4px; color: var(--text);
+  }
+
+  /* ---- stats ---- */
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    overflow: hidden;
+    margin: 26px 0 0;
+  }
+  .stat { background: var(--surface); padding: 13px 15px 12px; }
+  .stat .v {
+    font-family: var(--mono);
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    transition: color .18s ease;
+  }
+  .stat .k {
+    font-size: 11px; color: var(--faint); margin-top: 1px;
+    text-transform: uppercase; letter-spacing: .07em; font-family: var(--mono);
+  }
+  .stat.is-warn .v { color: var(--warn); }
+  .stat.is-crit .v { color: var(--crit); }
+
+  /* ---- section headings ---- */
+
+  h2.sec {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .13em;
+    color: var(--faint);
+    font-weight: 600;
+    margin: 40px 0 13px;
+    display: flex; align-items: center; gap: 11px;
+  }
+  h2.sec::after {
+    content: ""; flex: 1; height: 1px; background: var(--line);
+  }
+
+  /* ---- tick control ---- */
+
+  .console {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    padding: 18px 20px;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+  .steps { display: flex; align-items: center; gap: 0; }
+  .step {
+    display: flex; align-items: center; gap: 9px;
+    font-family: var(--mono); font-size: 12px; color: var(--faint);
+  }
+  .step .dot {
+    width: 25px; height: 25px; border-radius: 50%;
+    border: 1px solid var(--line-hi);
+    display: grid; place-items: center;
+    font-size: 11px; font-variant-numeric: tabular-nums;
+    background: var(--ground);
+    transition: background .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .step.done .dot { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .step.done { color: var(--text); }
+  :root[data-theme="dark"] .step.done .dot { color: #0d1119; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .step.done .dot { color: #0d1119; }
+  }
+  .rail { width: 34px; height: 1px; background: var(--line-hi); margin: 0 4px; }
+
+  .btn {
+    font-family: var(--sans); font-size: 13.5px; font-weight: 550;
+    background: var(--accent); color: #fff;
+    border: 1px solid var(--accent);
+    border-radius: var(--r); padding: 9px 16px; cursor: pointer;
+    transition: filter .15s ease;
+  }
+  :root[data-theme="dark"] .btn { color: #0d1119; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .btn { color: #0d1119; }
+  }
+  .btn:hover:not(:disabled) { filter: brightness(1.08); }
+  .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .btn.ghost {
+    background: transparent; color: var(--muted); border-color: var(--line);
+  }
+  .btn.ghost:hover { border-color: var(--line-hi); color: var(--text); }
+  .btn:focus-visible, .themetoggle:focus-visible, .row:focus-visible, .chip:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+  .runstate { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-left: auto; }
+
+  /* ---- agent filter ---- */
+
+  .chips { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 14px; }
+  .chip {
+    font-family: var(--mono); font-size: 11.5px;
+    background: var(--surface); color: var(--muted);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 5px 12px; cursor: pointer;
+  }
+  .chip:hover { border-color: var(--line-hi); color: var(--text); }
+  .chip[aria-pressed="true"] {
+    background: var(--accent-soft); color: var(--accent);
+    border-color: var(--accent);
+  }
+  .chip .n { opacity: .55; margin-left: 5px; font-variant-numeric: tabular-nums; }
+
+  /* ---- log ---- */
+
+  .logwrap {
+    border: 1px solid var(--line); border-radius: var(--r);
+    overflow: hidden; background: var(--surface);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 78px 96px 1fr 108px;
+    gap: 14px;
+    padding: 13px 16px 13px 13px;
+    border-bottom: 1px solid var(--line);
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    text-align: left; width: 100%;
+    background: none; color: inherit; font: inherit;
+  }
+  .row:last-child { border-bottom: none; }
+  .row:hover { background: var(--raised); }
+  .row.act-send     { border-left-color: var(--accent); }
+  .row.act-escalate { border-left-color: var(--crit); }
+  .row.act-flag     { border-left-color: var(--warn); }
+  .row.act-none     { border-left-color: var(--line-hi); }
+
+  .row .tick, .row .agent {
+    font-family: var(--mono); font-size: 11.5px; color: var(--faint);
+    font-variant-numeric: tabular-nums; padding-top: 2px;
+  }
+  .row .agent { color: var(--muted); }
+  .row .name {
+    font-family: var(--mono); font-size: 13px; font-weight: 550;
+    letter-spacing: -0.005em; word-break: break-word;
+  }
+  .row .why { color: var(--muted); font-size: 12.7px; margin-top: 3px; max-width: 68ch; }
+  .row .act { text-align: right; padding-top: 1px; }
+
+  .tag {
+    display: inline-block; font-family: var(--mono); font-size: 10.5px;
+    padding: 2.5px 8px; border-radius: 999px; white-space: nowrap;
+    border: 1px solid transparent; letter-spacing: .02em;
+  }
+  .tag.send     { background: var(--accent-soft); color: var(--accent); }
+  .tag.escalate { background: var(--crit-soft);   color: var(--crit); }
+  .tag.flag     { background: var(--warn-soft);   color: var(--warn); }
+  .tag.none     { background: var(--raised);      color: var(--faint); }
+
+  .empty { padding: 34px 18px; text-align: center; color: var(--faint); font-size: 13.5px; }
+
+  .converged {
+    margin-top: 14px; padding: 15px 17px;
+    background: var(--good-soft); border: 1px solid var(--good);
+    border-radius: var(--r); font-size: 13.5px; color: var(--text);
+  }
+  .converged b { color: var(--good); }
+
+  @keyframes slidein {
+    from { opacity: 0; transform: translateY(-5px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .fresh { animation: slidein .32s ease both; }
+  @media (prefers-reduced-motion: reduce) {
+    .fresh { animation: none; }
+    .stat .v, .step .dot, .btn { transition: none; }
+  }
+
+  /* ---- detail drawer ---- */
+
+  .scrim {
+    position: fixed; inset: 0; background: rgba(8, 11, 16, .5);
+    opacity: 0; pointer-events: none; transition: opacity .2s ease; z-index: 40;
+  }
+  .scrim.open { opacity: 1; pointer-events: auto; }
+
+  .drawer {
+    position: fixed; top: 0; right: 0; height: 100%;
+    width: min(560px, 100%);
+    background: var(--surface);
+    border-left: 1px solid var(--line);
+    z-index: 50;
+    transform: translateX(100%);
+    transition: transform .26s cubic-bezier(.4, 0, .2, 1);
+    display: flex; flex-direction: column;
+  }
+  .drawer.open { transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .drawer, .scrim { transition: none; }
+  }
+  .drawer header {
+    padding: 20px 22px 16px; border-bottom: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 14px;
+  }
+  .drawer header h3 {
+    margin: 6px 0 0; font-family: var(--mono); font-size: 15px;
+    font-weight: 600; letter-spacing: -0.01em; word-break: break-word;
+  }
+  .drawer .body { padding: 20px 22px 44px; overflow-y: auto; }
+  .close {
+    background: none; border: 1px solid var(--line); border-radius: var(--r);
+    color: var(--muted); cursor: pointer; font-size: 17px; line-height: 1;
+    padding: 5px 10px; flex-shrink: 0;
+  }
+  .close:hover { color: var(--text); border-color: var(--line-hi); }
+  .close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 13px; }
+  .lab {
+    font-family: var(--mono); font-size: 11px; color: var(--faint);
+    text-transform: uppercase; letter-spacing: .1em; margin: 24px 0 8px;
+  }
+  .lab:first-child { margin-top: 0; }
+  pre {
+    font-family: var(--mono); font-size: 12px; line-height: 1.5;
+    background: var(--ground); border: 1px solid var(--line);
+    border-radius: var(--r); padding: 13px; margin: 0;
+    overflow-x: auto;
+  }
+  .letter {
+    background: var(--ground); border: 1px solid var(--line);
+    border-radius: var(--r); padding: 15px 16px;
+  }
+  .letter .to {
+    font-family: var(--mono); font-size: 11.5px; color: var(--faint);
+    padding-bottom: 9px; margin-bottom: 11px; border-bottom: 1px solid var(--line);
+    word-break: break-word;
+  }
+  .letter .sub { font-weight: 620; font-size: 14px; margin-bottom: 7px; }
+  .letter .msg { white-space: pre-wrap; font-size: 13.5px; color: var(--muted); }
+  .quiet { color: var(--faint); font-size: 13px; font-style: italic; }
+
+  /* ---- footer ---- */
+
+  .foot {
+    margin-top: 46px; padding-top: 20px; border-top: 1px solid var(--line);
+    color: var(--faint); font-size: 12.5px;
+  }
+  .foot a { color: var(--accent); }
+
+  @media (max-width: 720px) {
+    .row { grid-template-columns: 56px 1fr; gap: 9px; }
+    .row .agent { grid-column: 1; }
+    .row .act { grid-column: 2; text-align: left; padding-top: 5px; }
+    .row .body-cell { grid-column: 1 / -1; }
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="brand">
+      <p class="eyebrow">Autonomous back office &middot; agent decision log</p>
+      <h1>Steward</h1>
+      <p>Five agents run a small coaching center's admin loop unattended. Step
+         through three scheduled ticks and watch them decide, escalate, and stop.</p>
+    </div>
+    <button class="themetoggle" id="theme">Theme</button>
+  </div>
+
+  <div class="provenance">
+    <b>What this is.</b> Real output captured from the application, replayed here
+    step by step &mdash; not a mockup, and not the running service. The production
+    app is a FastAPI service on Cloud Run with Firestore, driven by Cloud
+    Scheduler. This run executed with no <code>GEMINI_API_KEY</code>, so the
+    model column reads <code>fallback:*</code>: the decisions and escalation
+    logic are the real ones, while the message wording came from templates rather
+    than Gemini.
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <h2 class="sec">Scheduler</h2>
+  <div class="console">
+    <div class="steps" id="steps"></div>
+    <button class="btn" id="run">Run tick 1</button>
+    <button class="btn ghost" id="reset">Reset</button>
+    <span class="runstate" id="runstate">idle</span>
+  </div>
+
+  <h2 class="sec">Decision log</h2>
+  <div class="chips" id="chips"></div>
+  <div class="logwrap" id="log"></div>
+  <div id="converged"></div>
+
+  <div class="foot">
+    Every row is an autonomous decision recorded before the agent acted &mdash;
+    including the decisions <em>not</em> to act. Select any row for the
+    observations behind it and the message it produced.
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle">
+  <header>
+    <div>
+      <div class="eyebrow" id="dagent">agent</div>
+      <h3 id="dtitle">decision</h3>
+    </div>
+    <button class="close" id="dclose" aria-label="Close">&times;</button>
+  </header>
+  <div class="body" id="dbody"></div>
+</aside>
+
+<script>
+const RUN = __RUN_DATA__;
+
+const AGENT_PURPOSE = {
+  chase: "Chases staff for missing session documentation; escalates when ignored.",
+  collections: "Escalates overdue invoices with history-aware messaging.",
+  reports: "Compiles staff notes into progress reports for parents.",
+  risk: "Detects churn risk from attendance and payment signals.",
+  digest: "Summarises agent activity and surfaces what needs a human."
+};
+
+const $ = (id) => document.getElementById(id);
+const state = { tick: 0, filter: null, freshIds: new Set() };
+
+/* ---------- theme ---------- */
+$("theme").addEventListener("click", () => {
+  const root = document.documentElement;
+  const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const now = root.getAttribute("data-theme") || (dark ? "dark" : "light");
+  root.setAttribute("data-theme", now === "dark" ? "light" : "dark");
+});
+
+/* ---------- data ---------- */
+function shown() {
+  const out = [];
+  RUN.ticks.slice(0, state.tick).forEach((group, i) => {
+    group.forEach((d) => out.push({ ...d, tickNo: i + 1 }));
+  });
+  return out.reverse();
+}
+
+function stats() {
+  const all = shown();
+  const acted = all.filter((d) => d.action !== "none");
+  const msgs = all.reduce((n, d) => n + d.messages.length, 0);
+  const needsHuman = all.filter((d) => d.action === "escalate" || d.action === "flag");
+  return [
+    { k: "decisions", v: all.length },
+    { k: "acted", v: acted.length },
+    { k: "messages", v: msgs },
+    { k: "held back", v: all.length - acted.length },
+    { k: "needs a human", v: needsHuman.length, tone: needsHuman.length ? "is-warn" : "" },
+    { k: "students", v: RUN.clients.length },
+    { k: "at risk", v: RUN.clients.filter((c) => c.status === "at_risk").length && state.tick ? 1 : 0,
+      tone: state.tick ? "is-crit" : "" }
+  ];
+}
+
+/* ---------- render ---------- */
+function renderStats() {
+  $("stats").innerHTML = stats().map((s) =>
+    `<div class="stat ${s.tone || ""}"><div class="v">${s.v}</div><div class="k">${s.k}</div></div>`
+  ).join("");
+}
+
+function renderSteps() {
+  $("steps").innerHTML = RUN.ticks.map((_, i) =>
+    `${i ? '<span class="rail"></span>' : ""}` +
+    `<span class="step ${i < state.tick ? "done" : ""}">` +
+      `<span class="dot">${i + 1}</span></span>`
+  ).join("");
+
+  const done = state.tick >= RUN.ticks.length;
+  $("run").disabled = done;
+  $("run").textContent = done ? "All ticks run" : `Run tick ${state.tick + 1}`;
+  $("reset").disabled = state.tick === 0;
+  $("runstate").textContent = state.tick === 0
+    ? "idle — no ticks run"
+    : `tick ${state.tick} of ${RUN.ticks.length} complete`;
+}
+
+function renderChips() {
+  const all = shown();
+  const counts = {};
+  all.forEach((d) => { counts[d.agent] = (counts[d.agent] || 0) + 1; });
+  const agents = Object.keys(AGENT_PURPOSE).filter((a) => counts[a]);
+
+  $("chips").innerHTML = agents.length
+    ? agents.map((a) =>
+        `<button class="chip" data-agent="${a}" aria-pressed="${state.filter === a}"` +
+        ` title="${AGENT_PURPOSE[a]}">${a}<span class="n">${counts[a]}</span></button>`
+      ).join("")
+    : "";
+
+  $("chips").querySelectorAll(".chip").forEach((el) => {
+    el.addEventListener("click", () => {
+      state.filter = state.filter === el.dataset.agent ? null : el.dataset.agent;
+      renderChips(); renderLog();
+    });
+  });
+}
+
+function renderLog() {
+  let rows = shown();
+  if (state.filter) rows = rows.filter((d) => d.agent === state.filter);
+
+  if (!rows.length) {
+    $("log").innerHTML = `<div class="empty">${
+      state.tick === 0
+        ? "No decisions yet. Run the first scheduled tick."
+        : "No decisions from this agent."
+    }</div>`;
+    return;
+  }
+
+  $("log").innerHTML = rows.map((d) => `
+    <button class="row act-${d.action === "send_message" ? "send" : d.action}
+                 ${state.freshIds.has(d.id) ? "fresh" : ""}" data-id="${d.id}">
+      <span class="tick">tick ${d.tickNo}</span>
+      <span class="agent">${d.agent}</span>
+      <span class="body-cell">
+        <span class="name">${d.decision}</span>
+        <div class="why">${esc(d.rationale)}</div>
+      </span>
+      <span class="act"><span class="tag ${
+        d.action === "send_message" ? "send" : d.action
+      }">${d.action === "send_message" ? "sent" : d.action}</span></span>
+    </button>`).join("");
+
+  $("log").querySelectorAll(".row").forEach((el) => {
+    el.addEventListener("click", () => openDrawer(el.dataset.id));
+  });
+}
+
+function renderConverged() {
+  $("converged").innerHTML = state.tick >= RUN.ticks.length
+    ? `<div class="converged"><b>Converged.</b> A fourth tick produces nothing.
+       Each issue ran its course &mdash; nudge, second nudge, hand to the owner
+       &mdash; and the agents stopped. An agent that never stops is one nobody
+       keeps installed.</div>`
+    : "";
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+}
+
+/* ---------- drawer ---------- */
+function openDrawer(id) {
+  const d = shown().find((x) => x.id === id);
+  if (!d) return;
+
+  $("dagent").textContent = `${d.agent} · tick ${d.tickNo}`;
+  $("dtitle").textContent = d.decision;
+
+  const chips = [
+    `<span class="tag ${d.action === "send_message" ? "send" : d.action}">${d.action}</span>`,
+    `<span class="tag none">confidence ${d.confidence}</span>`,
+    `<span class="tag none">${esc(d.model)}</span>`,
+    d.latency_ms ? `<span class="tag none">${d.latency_ms}ms</span>` : ""
+  ].join("");
+
+  const letters = d.messages.length
+    ? d.messages.map((m) => `
+        <div class="letter">
+          <div class="to">to ${esc(m.to_name)} &lt;${esc(m.to_address)}&gt; &middot; ${esc(m.status)}</div>
+          <div class="sub">${esc(m.subject)}</div>
+          <div class="msg">${esc(m.body)}</div>
+        </div>`).join('<div style="height:10px"></div>')
+    : `<p class="quiet">No message. This decision was a hold, a write-off, or a flag
+       &mdash; the agent looked and chose not to send.</p>`;
+
+  $("dbody").innerHTML = `
+    <div class="meta">${chips}</div>
+    <div class="lab" style="margin-top:22px">Why</div>
+    <p style="margin:0;font-size:13.8px">${esc(d.rationale)}</p>
+    <div class="lab">What the agent observed</div>
+    <pre>${esc(JSON.stringify(d.observed, null, 2))}</pre>
+    <div class="lab">Resulting message</div>
+    ${letters}`;
+
+  $("drawer").classList.add("open");
+  $("scrim").classList.add("open");
+  $("dclose").focus();
+}
+
+function closeDrawer() {
+  $("drawer").classList.remove("open");
+  $("scrim").classList.remove("open");
+}
+
+$("dclose").addEventListener("click", closeDrawer);
+$("scrim").addEventListener("click", closeDrawer);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
+
+/* ---------- controls ---------- */
+$("run").addEventListener("click", () => {
+  if (state.tick >= RUN.ticks.length) return;
+  state.freshIds = new Set(RUN.ticks[state.tick].map((d) => d.id));
+  state.tick += 1;
+  paint();
+  setTimeout(() => { state.freshIds = new Set(); }, 400);
+});
+
+$("reset").addEventListener("click", () => {
+  state.tick = 0; state.filter = null; state.freshIds = new Set();
+  paint();
+});
+
+function paint() { renderStats(); renderSteps(); renderChips(); renderLog(); renderConverged(); }
+paint();
+</script>
