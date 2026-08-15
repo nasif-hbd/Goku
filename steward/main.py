@@ -116,6 +116,22 @@ def decision_detail(request: Request, decision_id: str):
     )
 
 
+@app.post("/seed")
+def seed_demo() -> JSONResponse:
+    """One-time demo seed for a fresh deployment.
+
+    Refuses once an organization exists, so a public endpoint cannot be used to
+    overwrite a running customer's data.
+    """
+    store = get_store()
+    if store.query("orgs"):
+        raise HTTPException(409, "Already seeded - an organization exists")
+
+    from .seeddata import seed
+
+    return JSONResponse({"seeded": True, **seed(store)})
+
+
 @app.post("/tick")
 def tick(dry_run: bool = False) -> JSONResponse:
     """Run every agent once. This is the Cloud Scheduler entry point."""
